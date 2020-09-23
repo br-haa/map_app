@@ -63,8 +63,8 @@ export default {
     },
     pinClick(index){
       if(this.$store.state.masterList.Values.length > 0){
+        console.log('piin')
         this.$emit('pinClick', index)
-      } else{
       }
     }
   }

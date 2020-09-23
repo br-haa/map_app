@@ -91,7 +91,7 @@ name: "AppBody",
     this.activePin = index
     },
     renamePin(){
-    if(this.activePin){
+    if(this.$store.state.masterList.Values.length > 0){
       let namePin = prompt("enter name");
       if(namePin === null || namePin === ""){
       } else {
@@ -102,8 +102,11 @@ name: "AppBody",
 
     },
     removePin(){
-      if(this.activePin){
-        this.$store.commit('masterList/removeMarker', this.activePin)
+      if(this.$store.state.masterList.Values.length > 0){
+        console.log('remove '+ this.activePin )
+        this.$store.commit('masterList/removeMarker', (this.activePin -1))
+      } else {
+        console.log('confusion')
       }
     },
     uiUpdate(values){
