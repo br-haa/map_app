@@ -6,7 +6,10 @@
   </side-bars>
   <div id="mapGrid">
     <map-ui @renamePin="renamePin" @removePin="removePin" @uiUpdate="uiUpdate"></map-ui>
-    <map-holder @pinClick="setActivePin" @addPin="addPin"></map-holder>
+    <div id="mapOverlap" :style="{height: getHeight}">
+      <div id="overlapIndicator">{{message}}</div>
+    <map-holder id="map" @pinClick="setActivePin" @addPin="addPin"></map-holder>
+    </div>
   </div>
   <side-bars>
     <code-export></code-export>
@@ -30,6 +33,7 @@ name: "AppBody",
     center: '44.977161, -93.265322',
     markers: [],
     activePin: undefined,
+    getHeight: undefined
   }
   },
   computed:{
@@ -38,18 +42,24 @@ name: "AppBody",
       let newArr = []
       arr.forEach(x => {
         parseFloat(x)
-        console.log(parseFloat(x))
         newArr.push(x)
       })
       return newArr
     },
+    message(){
+      if(this.$store.state.masterList.Values.length === 0){
+        return 'add a map to edit'
+      }
+    }
   },
   methods: {
   createMapObject(payload){
-    let sendObj = {mapName:payload, mapZoom: this.zoom, mapCenter: this.getCenterArr, mapMarkers: []}
-    // when map is created push default hard code map to master
-    console.log(sendObj)
-    this.pushToMasterList(sendObj)
+    if(payload){
+      let sendObj = {mapName:payload, mapZoom: this.zoom, mapCenter: this.getCenterArr, mapMarkers: []}
+      // when map is created push default hard code map to master
+      console.log(sendObj)
+      this.pushToMasterList(sendObj)
+    }
   },
   pushToMasterList(payload){
     this.$store.commit('masterList/pushValues', payload) // commit map object as payload
@@ -60,7 +70,6 @@ name: "AppBody",
   changeCurrent(payload){ // TODO fix whatever this shit is
     let current = this.$store.state.masterList.Values[this.$store.state.masterList.Controller]
     let sendObj = {mapName:current.mapName, mapZoom: current.mapZoom, mapCenter: current.mapCenter, mapMarkers: current.mapMarkers}
-    console.log(sendObj)
     if(payload.type === 'zoom'){
       this.pushToMasterList({mapName:current.mapName, mapZoom: payload.value, mapCenter: current.mapCenter, mapMarkers: current.mapMarkers})
     }
@@ -76,37 +85,51 @@ name: "AppBody",
       if(namePin === null || namePin === ""){
       } else {
         this.$store.commit('masterList/addMarker', {text: namePin, location: location}) // commits name of pin and the lat lang to add marker in the store
-        console.log(this.$store.state.masterList.Values[this.$store.state.masterList.Controller])
       }
     },
     setActivePin(index){
     this.activePin = index
     },
     renamePin(){
+    if(this.activePin){
       let namePin = prompt("enter name");
       if(namePin === null || namePin === ""){
       } else {
         this.$store.commit('masterList/renameMarker', {index: this.activePin, value: namePin})
         this.selectedPin = undefined
       }
+    }
+
     },
     removePin(){
-    this.$store.commit('masterList/removeMarker', this.activePin)
+      if(this.activePin){
+        this.$store.commit('masterList/removeMarker', this.activePin)
+      }
     },
     uiUpdate(values){
-    this.changeCurrent({type:'zoom', value:values.zoom})
-    this.changeCurrent({type:'center', value:this.setCenterArr(values.center)})
+      if(this.$store.state.masterList.Values.length > 0){
+        this.changeCurrent({type:'zoom', value:values.zoom})
+        this.changeCurrent({type:'center', value:this.setCenterArr(values.center)})
+      }
     },
     setCenterArr(centerString){
       let arr = centerString.split(',')
       let newArr = []
       arr.forEach(x => {
         parseFloat(x)
-        console.log(parseFloat(x))
         newArr.push(x)
       })
       return newArr
     },
+    setHeight(){
+      let map = document.querySelector('#mapOverlap')
+      if(map){
+        this.getHeight = `${map.clientWidth}px`
+      }
+    },
+  },
+  mounted() {
+  this.setHeight()
   }
 }
 </script>
@@ -130,6 +153,27 @@ name: "AppBody",
     display: grid;
     grid-template-rows: auto 1fr;
     height: 100%;
+    #mapOverlap{
+      display: grid;
+      box-shadow: 0 0 3px 1px;
+      #map{
+        grid-area: 1/1/1/1;
+      }
+      #overlapIndicator{
+        pointer-events: none;
+        z-index: 9999;
+        grid-area: 1/1/1/1;
+        align-self: start;
+        justify-self: start;
+        width: 70%;
+        height: 25%;
+        background-color: hsla(0,100%,30%,.08);
+        display: grid;
+        place-items: center;
+        font-size: 2rem;
+        text-shadow: 0 0 2px black;
+      }
+    }
   }
 }
 </style>

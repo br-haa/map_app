@@ -7,7 +7,7 @@
       coordinates
     </label>
     <label id="zoomInput">
-      <input v-model="zoomVmodle" @keypress.13="waitForPress">
+      <input v-model="zoomVmodle" type="number" @keypress.13="waitForPress">
       zoom
     </label>
   </div>
@@ -46,8 +46,9 @@ name: "MapUi",
       height: 60px;
       width: 60px;
       border-radius: 360px;
-      border: none;
+      border: red 1px solid;
       box-shadow: 0 0 3px 1px;
+      background-color: white;
     }
     #delete{
       @include buttons;

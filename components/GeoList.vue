@@ -82,6 +82,8 @@ name: "GeoList",
 .actionable{
   width: 100%;
   cursor: pointer;
+  display: grid;
+  align-items: center;
 }
   p{
     margin: 0;

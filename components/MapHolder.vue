@@ -55,17 +55,26 @@ export default {
       });
     },
     newPinStart(e){
-      // on map click emits the lat and lang of the position clicked
-      this.$emit('addPin',e.latlng)
+      // on map click emits the lat and lang of the position clicked if there is a value in the store
+      if(this.$store.state.masterList.Values.length > 0){
+        this.$emit('addPin',e.latlng)
+      } else{
+      }
     },
     pinClick(index){
-      this.$emit('pinClick', index)
+      if(this.$store.state.masterList.Values.length > 0){
+        this.$emit('pinClick', index)
+      } else{
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+#map-wrap{
+
+}
 .leaflet-control-zoom{
   display: none;
 }

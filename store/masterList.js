@@ -7,7 +7,6 @@ export const state = () => ({
 export const mutations = {
   pushValues(state, value){
     let mapObj = {mapName:value.mapName, mapZoom: value.mapZoom, mapCenter: value.mapCenter, mapMarkers: value.mapMarkers}
-    console.log(mapObj)
     let check = [];
     state.Values.forEach(obj => {
       if(obj.mapName === value.mapName){
@@ -26,9 +25,7 @@ export const mutations = {
       }
     })
 
-    if(check.some((x) => {
-      return x === true
-    })){
+    if(check.some((x) => { return x === true }) || value.mapName === '' || value.mapName === undefined || value.mapName === null){
       check = []
     } else {
       state.Values.push(mapObj)
