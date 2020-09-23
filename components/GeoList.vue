@@ -4,9 +4,9 @@
       <input id="geoInput" type="text" v-model="inputValue" @keypress.13="inputMap" placeholder="MapName">
     </label>
    <div>
-     <div>
+     <div class="textDisplay">
        <div v-for="(text, index) in displayText" class="geoItem" :class="{selected: index === $store.state.masterList.Controller}">
-         <div class="actionable" @click="changeController(index)"><p class="geoItemText">{{text}}</p></div>
+         <div class="actionable" @click="changeController(index)"><p class="geoItemText">{{text.mapName}}</p></div>
          <button class="geoDeleteButton" @click="emitDelete(index)">X</button>
        </div>
    </div>
@@ -30,17 +30,26 @@ name: "GeoList",
       } else {
         return ['...']
       }
-
+    },
+    controller(){
+      return this.$store.state.masterList.Controller
+    },
+    values(){
+      return this.$store.state.masterList.Values
     }
   },
   methods:{
   inputMap(){
     this.$emit('addMap', this.inputValue)
+    this.inputValue = ''
   },
   changeController(index){
     this.$store.commit('masterList/changeController', index)
   },
   emitDelete(index){
+    if(this.controller === this.values.length -1 && this.controller !== 0){
+      this.$store.commit('masterList/changeController', this.controller -1)
+    }
     this.$emit('deleteMap',index)
   }
 
@@ -49,24 +58,34 @@ name: "GeoList",
 </script>
 
 <style scoped lang="scss">
+#geoInputLabel{
+  width: 100%;
+  input{
+    width: 100%;
+    height: 40px;
+    padding: 0;
+  }
+}
 .selected{
   background-color: hsla(0,0%,100%,0.5) !important;
-  color: black !important;
+  color: red !important;
   transition: .5s;
 }
 .geoItem{
   background-color: hsla(0,0%,100%,0.0);
-  color: white;
+  color: black;
   padding: .3rem;
-
   display: grid;
   grid-template-columns: 1fr auto;
   grid-column-gap: 1rem;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #000000;
 .actionable{
   width: 100%;
   cursor: pointer;
 }
+  p{
+    margin: 0;
+  }
 .geoDeleteButton{
   cursor: pointer;
   justify-self: end;
@@ -83,9 +102,8 @@ name: "GeoList",
 transition: .5s;
 }
 .textDisplay{
-  background-color: rgba(0, 0, 0, 0.54);
   overflow-y: scroll;
-  height: 600px;
-  padding: 1rem;
+  height: 100%;
+  margin-top: 1rem;
 }
 </style>

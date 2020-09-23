@@ -1,10 +1,10 @@
 <template>
   <div id="map-wrap">
-    <l-map :zoom="masterMapArr[0].zoom" :center="masterMapArr[0].center" @click="newPinStart" >
+    <l-map :zoom="masterMapArr[controller].mapZoom" :center="masterMapArr[controller].mapCenter" @click="newPinStart" >
       <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-      <l-marker v-for="(marker, index) in masterMapArr[controller].markers" class="mapPin"
+      <l-marker v-for="(marker, index) in masterMapArr[controller].mapMarkers" class="mapPin"
                 :lat-lng="marker.location" :icon="getIcon(marker)" @click="pinClick(index)" ></l-marker>
-      <l-marker v-for="(marker, index) in masterMapArr[controller].markers" class="mapText"
+      <l-marker v-for="(marker, index) in masterMapArr[controller].mapMarkers" class="mapText"
                 :lat-lng="marker.location" :icon="getText(marker)" @click="pinClick(index)"></l-marker>
     </l-map>
   </div>
@@ -20,10 +20,10 @@ export default {
       }else {
        return  [
          {
-           name: `default`,
-           zoom: 8,
-           center: [44.977161, -93.265322],
-           markers:[
+           mapName: `default`,
+           mapZoom: 8,
+           mapCenter: [44.977161, -93.265322],
+           mapMarkers:[
              {text:'Minneapolis', location:[44.977161, -93.265322]},
            ],
          }
@@ -55,6 +55,7 @@ export default {
       });
     },
     newPinStart(e){
+      // on map click emits the lat and lang of the position clicked
       this.$emit('addPin',e.latlng)
     },
     pinClick(index){
@@ -64,6 +65,19 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.leaflet-control-zoom{
+  display: none;
+}
+.leaflet-marker-icon{
+h1{
+  margin-left: -120px;
+  text-align: center;
+  width: 300px;
+  text-shadow: 0 0 3px #ffffff;
+}
+svg{
+  margin-top: -20px;
+}
+}
 </style>
