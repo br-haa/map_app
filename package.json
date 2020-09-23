@@ -12,7 +12,8 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "nuxt": "^2.14.5",
-    "nuxt-leaflet": "0.0.21"
+    "nuxt-leaflet": "0.0.21",
+    "vue-particles-generator": "^1.0.3"
   },
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.0.0",

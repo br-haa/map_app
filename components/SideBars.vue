@@ -13,7 +13,8 @@ export default {
 <style scoped lang="scss">
 .sideBar{
   width: 80%;
-  background-color: white;
+  background-color: hsla(0%,0%,100,.5);
+  backdrop-filter: blur(3px);
   box-shadow: 0 0 5px 3px;
   padding: 1rem;
   height: 100%;
