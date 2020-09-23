@@ -4,7 +4,7 @@
     [
     <div class="spacer"></div>
     <code v-for="code in this.$store.state.masterList.Values">
-      {{code}}
+      {{code}},
       <div class="spacer"></div>
     </code>
 ]
