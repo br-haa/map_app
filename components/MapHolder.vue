@@ -80,13 +80,15 @@ export default {
 }
 .leaflet-marker-icon{
 h1{
-  margin-left: -120px;
+  margin-left: -145px;
+  margin-top: -10px;
   text-align: center;
   width: 300px;
   text-shadow: 0 0 3px #ffffff;
 }
 svg{
-  margin-top: -20px;
+  margin-top: -50px;
+  margin-left: -20px;
 }
 }
 </style>
