@@ -1,6 +1,7 @@
 <template>
   <div>
     <Nuxt />
+    <options-modal></options-modal>
     <client-only>
       <app-body></app-body>
     </client-only>
@@ -10,8 +11,9 @@
 
 <script>
 import AppBody from "~/components/AppBody";
+import OptionsModal from "@/components/OptionsModal";
 export default {
-  components: {AppBody}
+  components: {OptionsModal, AppBody}
 }
 </script>
 <style scoped lang="scss">

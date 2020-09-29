@@ -68,8 +68,9 @@ name: "GeoList",
 }
 .selected{
   background-color: hsla(0,0%,100%,0.5) !important;
-  color: red !important;
+  color: hsla(195,50%,50%,1) !important;
   transition: .5s;
+  font-weight: bold;
 }
 .geoItem{
   background-color: hsla(0,0%,100%,0.0);
@@ -79,6 +80,7 @@ name: "GeoList",
   grid-template-columns: 1fr auto;
   grid-column-gap: 1rem;
   border-bottom: 1px solid #000000;
+  font-family: sans-serif;
 .actionable{
   width: 100%;
   cursor: pointer;
@@ -91,7 +93,7 @@ name: "GeoList",
 .geoDeleteButton{
   cursor: pointer;
   justify-self: end;
-  background-color: red;
+  background-color: hsla(195,50%,50%,1);
   color: white;
   font-weight: bold;
   border: none;

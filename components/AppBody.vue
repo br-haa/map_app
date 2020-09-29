@@ -164,7 +164,7 @@ name: "AppBody",
       }
       #overlapIndicator{
         pointer-events: none;
-        z-index: 9999;
+        z-index: 900;
         grid-area: 1/1/1/1;
         align-self: start;
         justify-self: start;

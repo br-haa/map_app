@@ -63,6 +63,8 @@ name: "CodeExport",
     border: black 1px solid;
     box-shadow: 0 0 3px 1px;
     cursor: pointer;
+    text-decoration: underline hsla(195,50%,50%,1);
+    font-weight: bold;
   }
 }
 </style>

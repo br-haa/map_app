@@ -43,10 +43,11 @@ name: "MapUi",
   align-items: center;
   margin-bottom: 1rem;
     @mixin buttons{
+      cursor: pointer;
       height: 60px;
       width: 60px;
       border-radius: 360px;
-      border: red 1px solid;
+      border: hsla(195,50%,50%,1) 2px solid;
       box-shadow: 0 0 3px 1px;
       background-color: white;
     }
@@ -67,7 +68,8 @@ name: "MapUi",
       align-self: center;
       margin-left: 10px;
       text-align: center;
-      font-size: .8rem;
+      font-size: .9rem;
+      color: white;
       input{
         width: 100%;
         text-align: center;
@@ -78,7 +80,8 @@ name: "MapUi",
       align-self: center;
       width: 200px;
       text-align: center;
-      font-size: .8rem;
+      font-size: .9rem;
+      color: white;
       input{
         width: 100%;
         text-align: center;
