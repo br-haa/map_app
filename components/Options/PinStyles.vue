@@ -6,13 +6,13 @@
       <div class="inputGrid">
         <label>
           Pin Color
-          <input type="color">
+          <input type="color" v-model="pinColor">
         </label>
         <label>
           Label Color
-          <input type="color">
+          <input type="color" v-model="labelColor">
         </label>
-        <button>Set Colors</button>
+        <button @click="setColors">Set Colors</button>
       </div>
     </div>
   </div>
@@ -23,13 +23,13 @@
       <div class="inputGrid">
         <label>
           Pin Size (in px)
-          <input type="number">
+          <input type="number" v-model="pinSize">
         </label>
         <label>
           Label Size (in px)
-          <input type="number">
+          <input type="number" v-model="labelSize">
         </label>
-        <button>Set Sizes</button>
+        <button @click="setSizes">Set Sizes</button>
       </div>
     </div>
   </div>
@@ -38,7 +38,25 @@
 
 <script>
 export default {
-  name: "PinStyles"
+  name: "PinStyles",
+  data(){
+    return{
+      pinColor:'#0c0066',
+      labelColor:'#0c0066',
+      pinSize:70, // because of how the components load these must be kept the same as the store option defaults
+      labelSize:25
+    }
+  },
+  methods:{
+    setColors(){
+      this.$emit('pinColors', {pin:this.pinColor, label:this.labelColor, default: true})
+      this.$store.commit('masterList/changeColors', {pin:this.pinColor, label:this.labelColor, default: false})
+    },
+    setSizes(){
+      this.$emit('pinSizes', {pin: this.pinSize, label: this.labelSize, default: true})
+      this.$store.commit('masterList/changeSizes', {pin:this.pinSize, label:this.labelSize, default: false})
+    }
+  }
 }
 </script>
 

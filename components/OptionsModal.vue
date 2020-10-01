@@ -14,7 +14,7 @@
           <button v-for="option in navOptions" :class="{selected: optionsView === option.link}" @click="optionsView = option.link">{{option.name}}</button>
         </div>
         <transition name="fade" mode="out-in">
-          <component :is="optionsView"> </component>
+          <component :is="optionsView" @setMapSize="setMapSize" @pinColors="setPinColors" @pinSizes="setPinSizes"> </component>
         </transition>
 
       </div>
@@ -37,13 +37,29 @@ name: "OptionsModal",
       {name:'Style Map Pins', link:'PinStyles'},
       {name:'Upload / Download', link:'UploadDownload'},
     ],
-    optionsView: 'MapSize'
+    optionsView: 'PinStyles'
   }
   },
   components:{
     MapSize,
     PinStyles,
     UploadDownload
+  },
+  methods:{
+    setMapSize(sizeObject){
+      console.log('helllo')
+      this.$store.commit('options/changeMapSize', sizeObject)
+      this.$emit('update')
+    },
+    setPinColors(colorObject){
+      this.$store.commit('masterList/setDefaultColor', colorObject)
+    },
+    setPinSizes(sizeObject){
+      this.$store.commit('masterList/setDefaultSize', sizeObject)
+    }
+  },
+  mounted() {
+
   }
 }
 </script>
@@ -206,14 +222,14 @@ name: "OptionsModal",
   transform: translateY(0);
   transition: .5s;
 }
-.fall-enter, .fall-leave-to /* .fall-leave-active below version 2.1.8 */ {
+.fall-enter, .fall-leave-to{
   transform: translateY(-100vh);
 }
 .fade-enter-active, .fade-leave-active{
   opacity: 1;
   transition: .5s;
 }
-.fade-enter, .fade-leave-to /* .fall-leave-active below version 2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 </style>

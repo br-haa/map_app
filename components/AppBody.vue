@@ -6,18 +6,24 @@
   </side-bars>
   <div id="mapGrid">
     <map-ui @renamePin="renamePin" @removePin="removePin" @uiUpdate="uiUpdate"></map-ui>
-    <div id="mapOverlap" :style="{height: getHeight}">
+    <div id="mapOverlap" :style="{width:activeWidth, height: getHeight}">
       <div id="overlapIndicator">{{message}}</div>
-    <map-holder id="map" @pinClick="setActivePin" @addPin="addPin"></map-holder>
+    <map-holder id="map" @pinClick="setActivePin" @addPin="addPin" :reloadMap="reloadMapSwitch"></map-holder>
     </div>
   </div>
   <side-bars>
     <code-export></code-export>
   </side-bars>
 </div>
+    <div id="switchWrapper">
+      <p>{{deviceLabel}}</p>
+    <label class="switch">
+      <input type="checkbox" v-model="deviceDesktop" @change="setWidth(); setLabel(); ">
+      <span class="slider"></span>
+    </label>
+    </div>
   </div>
 </template>
-
 <script>
 import SideBars from "~/components/SideBars";
 import MapUi from "~/components/MapUi";
@@ -33,7 +39,16 @@ name: "AppBody",
     center: '44.977161, -93.265322',
     markers: [],
     activePin: undefined,
-    getHeight: undefined
+    getHeight: undefined,
+    activeWidth:'100%',
+    deviceDesktop: true,
+    deviceLabel: 'Desktop',
+    reloadMapSwitch: true,
+  }
+  },
+  props:{
+  update:{
+    type: Boolean
   }
   },
   computed:{
@@ -46,16 +61,50 @@ name: "AppBody",
       })
       return newArr
     },
+    getColors(){ // getting the colors for the pins
+      let singleColor = this.$store.state.masterList.Values[this.$store.state.masterList.Controller]?.mapColors
+      let globalColor = this.$store.state.masterList.DefaultColors
+      if(singleColor && singleColor.default === false){
+        console.log('single')
+        return singleColor
+      } else {
+        if(this.$store.state.masterList.Values.length > 0){
+          console.log('global')
+          this.$store.commit('masterList/changeColors',globalColor)
+          return  singleColor
+        } else {
+          return globalColor
+        }
+      }
+    },
+    getSizes(){ // getting the sizes for the pins
+      let singleSize = this.$store.state.masterList.Values[this.$store.state.masterList.Controller]?.mapSizes
+      let globalSize = this.$store.state.masterList.DefaultSizes
+      if(singleSize && singleSize.default === false){
+        console.log('single')
+        return singleSize
+      } else {
+        if(this.$store.state.masterList.Values.length > 0){
+          console.log('global')
+          this.$store.commit('masterList/changeSizes',globalSize)
+          return  singleSize
+        } else {
+          return globalSize
+        }
+      }
+    },
     message(){
       if(this.$store.state.masterList.Values.length === 0){
         return 'add a map to edit'
       }
-    }
+    },
   },
   methods: {
   createMapObject(payload){
+    // let length = this.$store.state.masterList.Values.length
+    // this.$store.commit('masterList/changeController', length)
     if(payload){
-      let sendObj = {mapName:payload, mapZoom: this.zoom, mapCenter: this.getCenterArr, mapMarkers: []}
+      let sendObj = {mapName:payload, mapZoom: this.zoom, mapCenter: this.getCenterArr, mapMarkers: [], mapColors:this.getColors, mapSizes:this.getSizes}
       // when map is created push default hard code map to master
       console.log(sendObj)
       this.pushToMasterList(sendObj)
@@ -124,15 +173,51 @@ name: "AppBody",
       })
       return newArr
     },
+    widthSwitch(){
+    this.deviceDesktop = !this.deviceDesktop
+
+    },
+    setWidth(){
+    let desktop = this.$store.state.options.mapSize.desktop;
+    let mobile = this.$store.state.options.mapSize.mobile
+    if(this.deviceDesktop){
+      if(desktop !== 0 && desktop !== undefined){
+        this.activeWidth = desktop+'px'
+      }
+    } else {
+      if(mobile !==0 && mobile !== undefined){
+        this.activeWidth = mobile+'px'
+      }
+    }
+    this.setHeight()
+    },
     setHeight(){
+    if(this.activeWidth === '100%'){
       let map = document.querySelector('#mapOverlap')
+      console.log('running height')
       if(map){
         this.getHeight = `${map.clientWidth}px`
       }
+    } else {
+      this.getHeight = this.activeWidth
+    }
+    this.reloadMapSwitch = !this.reloadMapSwitch
     },
+    setLabel(){
+      if(this.deviceDesktop){
+        this.deviceLabel = 'Desktop'
+      } else {
+        this.deviceLabel = 'Mobile'
+      }
+    }
+  },
+  watch:{
+update: function (){
+  this.setWidth()
+}
   },
   mounted() {
-  this.setHeight()
+  this.setWidth()
   }
 }
 </script>
@@ -146,6 +231,7 @@ name: "AppBody",
 }
 .wrapper{
   display: grid;
+  grid-area: 1/1/1/1;
   height: 80%;
   width: 100%;
   grid-template-columns: 1fr 1fr 1fr;
@@ -159,6 +245,9 @@ name: "AppBody",
     #mapOverlap{
       display: grid;
       box-shadow: 0 0 3px 1px;
+      place-self: center;
+      height: 600px;
+      width: 600px;
       #map{
         grid-area: 1/1/1/1;
       }
@@ -179,4 +268,55 @@ name: "AppBody",
     }
   }
 }
+#switchWrapper{
+  grid-area: 1/1/1/1;
+  align-self: end;
+  justify-self: center;
+  margin-bottom: 1rem;
+  width: 55px;
+  height: 30px;
+  background: hsla(100,50%,100%,0.5);
+  border-radius: 360px;
+  padding: .2rem;
+  display: grid;
+  p{
+    grid-area: 1/1/1/1;
+    margin: 0;
+    transform: translateY(-25px);
+    text-align: center;
+    color: white;
+    user-select: none;
+    pointer-events: none;
+  }
+  .switch {
+    grid-area: 1/1/1/1;
+    cursor: pointer;
+    background: hsla(100,50%,100%,0.5);
+    box-sizing: border-box;
+    padding: .2rem;
+    border-radius: 360px;
+    display: grid;
+    height: 100%;
+    width: 100%;
+    input{
+      grid-area: 1/1/1/1;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider{
+      border-radius: 360px;
+      transition: .3s;
+      grid-area: 1/1/1/1;
+      justify-self: end;
+      width: 50%;
+      height: 100%;
+      background: hsla(195,50%,50%,1);
+    }
+    input:checked + .slider{
+      justify-self: start;
+    }
+  }
+}
+
 </style>

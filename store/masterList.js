@@ -1,12 +1,14 @@
 export const state = () => ({
   Values:[
   ],
-  Controller: 0
+  Controller: 0,
+  DefaultColors: {pin:'#0c0066',label:'#0c0066', default: true},
+  DefaultSizes: {pin:70,label:25, default: true}
 })
 
 export const mutations = {
   pushValues(state, value){
-    let mapObj = {mapName:value.mapName, mapZoom: value.mapZoom, mapCenter: value.mapCenter, mapMarkers: value.mapMarkers}
+    let mapObj = {mapName:value.mapName, mapZoom: value.mapZoom, mapCenter: value.mapCenter, mapMarkers: value.mapMarkers, mapPinColors: value.mapPinColors, mapPinSizes: value.mapPinSizes}
     let check = [];
     state.Values.forEach(obj => {
       if(obj.mapName === value.mapName){
@@ -48,5 +50,17 @@ export const mutations = {
   },
   changeController(state,value) {
     state.Controller = value
+  },
+  changeColors(state,value){
+    state.Values[state.Controller].mapPinColors = value
+  },
+  changeSizes(state,value){
+    state.Values[state.Controller].mapPinSizes = value
+  },
+  setDefaultColor(state,value){
+    state.DefaultColors = value
+  },
+  setDefaultSize(state,value){
+    state.DefaultSizes = value
   }
 }

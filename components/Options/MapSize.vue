@@ -33,7 +33,8 @@ name: "MapSize",
   },
   methods:{
   setSize(){
-    this.$emit('setMapSize', {Desktop:this.DesktopMapSize, Mobile:this.MobileMapSize})
+
+    this.$emit('setMapSize', {desktop:this.DesktopMapSize, mobile:this.MobileMapSize})
   }
   }
 }
