@@ -17,9 +17,11 @@
 export default {
 name: "CodeExport",
   methods:{
-  copy(){
-    let code = document.querySelector('#code')
-    this.copyText(code)
+  copy() {
+    if (this.$store.state.masterList.Values.length > 0) {
+      let code = document.querySelector('#code')
+      this.copyText(code)
+    }
   },
     copyText(element) {
       let range, selection, worked;

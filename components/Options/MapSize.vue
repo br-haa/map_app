@@ -33,8 +33,9 @@ name: "MapSize",
   },
   methods:{
   setSize(){
-
-    this.$emit('setMapSize', {desktop:this.DesktopMapSize, mobile:this.MobileMapSize})
+    if (this.$store.state.masterList.Values.length > 0) {
+      this.$emit('setMapSize', {desktop:this.DesktopMapSize, mobile:this.MobileMapSize})
+    }
   }
   }
 }

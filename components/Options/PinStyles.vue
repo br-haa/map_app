@@ -49,12 +49,16 @@ export default {
   },
   methods:{
     setColors(){
-      this.$emit('pinColors', {pin:this.pinColor, label:this.labelColor, default: true})
-      this.$store.commit('masterList/changeColors', {pin:this.pinColor, label:this.labelColor, default: false})
+      if (this.$store.state.masterList.Values.length > 0) {
+        this.$emit('pinColors', {pin:this.pinColor, label:this.labelColor, default: true})
+        this.$store.commit('masterList/changeColors', {pin:this.pinColor, label:this.labelColor, default: false})
+      }
     },
     setSizes(){
-      this.$emit('pinSizes', {pin: this.pinSize, label: this.labelSize, default: true})
-      this.$store.commit('masterList/changeSizes', {pin:this.pinSize, label:this.labelSize, default: false})
+      if (this.$store.state.masterList.Values.length > 0) {
+        this.$emit('pinSizes', {pin: this.pinSize, label: this.labelSize, default: true})
+        this.$store.commit('masterList/changeSizes', {pin:this.pinSize, label:this.labelSize, default: false})
+      }
     }
   }
 }
