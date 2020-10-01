@@ -57,6 +57,9 @@ export default {
     redrawMap(){
       this.$nextTick(() => {
         this.$refs.myMap.mapObject.invalidateSize();
+        if(this.$store.state.masterList.Values[this.$store.state.masterList.Controller]?.mapCenter){
+          this.$refs.myMap.mapObject.setView(this.$store.state.masterList.Values[this.$store.state.masterList.Controller].mapCenter)
+        }
       })
     },
     getIcon(item) {
