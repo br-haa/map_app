@@ -63,18 +63,11 @@ name: "AppBody",
     },
     getColors(){ // getting the colors for the pins
       let singleColor = this.$store.state.masterList.Values[this.$store.state.masterList.Controller]?.mapColors
-      let globalColor = this.$store.state.masterList.DefaultColors
       if(singleColor && singleColor.default === false){
         console.log('single')
         return singleColor
       } else {
-        if(this.$store.state.masterList.Values.length > 0){
-          console.log('global')
-          this.$store.commit('masterList/changeColors',globalColor)
-          return  singleColor
-        } else {
-          return globalColor
-        }
+        return {}
       }
     },
     getSizes(){ // getting the sizes for the pins
@@ -84,13 +77,7 @@ name: "AppBody",
         console.log('single')
         return singleSize
       } else {
-        if(this.$store.state.masterList.Values.length > 0){
-          console.log('global')
-          this.$store.commit('masterList/changeSizes',globalSize)
-          return  singleSize
-        } else {
-          return globalSize
-        }
+        return {}
       }
     },
     message(){
