@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.5",
+    "nuxt": "^2.15.7",
     "nuxt-leaflet": "0.0.22",
     "random-backgrounds": "^0.1.5",
     "vue-particles-generator": "^1.0.3"
