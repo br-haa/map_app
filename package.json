@@ -17,7 +17,7 @@
     "vue-particles-generator": "^1.0.3"
   },
   "devDependencies": {
-    "@nuxtjs/style-resources": "^1.0.0",
+    "@nuxtjs/style-resources": "^1.2.0",
     "@vue/test-utils": "^1.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.5.2",
